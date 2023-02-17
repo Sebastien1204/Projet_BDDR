@@ -1,0 +1,63 @@
+#!/bin/env python3
+
+import os
+import psycopg2
+from password import *
+import pandas as pd
+
+class Ressource():
+
+    def __init__(self):
+        self.path = os.getcwd()
+        self.thematique = [] 
+        self.sous_thematique = []
+
+
+
+    def verification(self,nom):
+        for i in range(len(self.sous_thematique)):
+            for j in range(len(self.sous_thematique[i])):
+                if nom == self.sous_thematique[i][j]:
+                    return False
+        return True
+                
+
+
+    def extract(self,repo,j = None ,path = None):
+        if path : 
+            a = path
+        else:
+            a = self.path
+        b = "/" + str(repo)
+        path_2 = a + b
+        Ressource.tri(self,path_2,j)
+
+
+    def tri(self,path = None, j= None):
+        if path:
+            new_path = path
+        else: 
+            new_path = self.path
+
+        if path:
+            list_files = os.listdir(new_path)
+            self.sous_thematique.append([])
+            for i in range(len(list_files)):
+                element = list_files[i]
+                if not "." in element :
+                    Ressource.extract(self,element,j,new_path) 
+                elif element != "":
+                    if element[-5] == "_":
+                        if Ressource.verification(self,element[:-5]) == True:
+                            self.sous_thematique[j].append(element[:-5])
+                    else:
+                        if Ressource.verification(self,element[:-4]) == True:
+                            self.sous_thematique[j].append(element[:-4])
+            j+=1
+        else:
+            list_files = os.listdir(new_path)[1:]
+            for i in range(len(list_files)):
+                element = list_files[i]
+                if not "." in element:
+                    self.thematique.append(element)
+                    Ressource.extract(self,element, i)
