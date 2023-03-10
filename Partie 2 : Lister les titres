@@ -1,24 +1,21 @@
 #!/bin/env python3
 #Suite de la partie 1
 
-    def recup(self):
-        r = 0        
-        for i in range(len(self.thematique)-1):
+    def recup(self):                                #Cette fonction va lister les titres des articles qui sont dans nos sous-thématiques
+        for i in range(len(self.thematique)-1):     #On va dans nos thématiques
             self.titre.append([])
-            for j in range(len(self.sous_thematique[i])):
-                self.titre[i].append([])
+            for j in range(len(self.sous_thematique[i])):       #On va dans nos sous-thématiques et on va regarder tous les fichier csv
+                self.titre[i].append([])                        
                 with open(self.path + "/CORD-19/Kaggle/target_tables" + '/' + str(self.thematique[i])+'/' +str(self.sous_thematique[i][j]), newline='',encoding = "utf8") as csvfile:
-                    reader = csv.reader(csvfile)
+                    reader = csv.reader(csvfile)                    #On lit les fichiers csv associés aux sous-thématiques
                     L = []
                     for ligne in reader:
                         L.append(ligne)
                     l = 0
-                    while(L[0][l]!= 'Study'):
+                    while(L[0][l]!= 'Study'):       #On a vu que le titre était dans la colonnes Study, donc on cherche la colonne Study dans l'ensemble des fichier
                         l+=1
-                    r += len(L)-1
-                    for k in range(1,len(L)):
+                    for k in range(1,len(L)):       #On ajoute les titres dans la liste
                         self.titre[i][j].append(L[k][l])
-        print(r)
 
     def creer_titre(self):
         file = open("les_titres.txt", "w") 
@@ -45,7 +42,6 @@
             for k in range(1,len(L)):
                 if L[k][l] not in self.name:
                     self.name.append(L[k][l])
-        print(len(self.name))
 
     def creer_name(self):
         file = open("les_titres2.txt", "w") 
