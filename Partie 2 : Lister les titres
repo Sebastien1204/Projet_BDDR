@@ -31,6 +31,7 @@
         file.close()
 
     def recup_csv(self):
+        A = []
         with open(self.path + '/CORD-19/metadata.csv' , newline='',encoding = "utf8") as csvfile:
             reader = csv.reader(csvfile)
             L = []
@@ -40,8 +41,9 @@
             while(L[0][l]!= 'title'):
                 l+=1
             for k in range(1,len(L)):
-                if L[k][l] not in self.name:
-                    self.name.append(L[k][l])
+                A.append(L[k][l])
+            self.name = list(set(A))
+        print(len(self.name))
 
     def creer_name(self):
         file = open("les_titres2.txt", "w") 
