@@ -12,6 +12,8 @@ class Ressource():
         self.path = os.getcwd()     #Permet de récupérer le chemin du fichier 
         self.thematique = []        
         self.sous_thematique = []
+        self.titre =[]
+        self.name = []
 
 
 
