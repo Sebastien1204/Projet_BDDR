@@ -1,0 +1,54 @@
+#!/bin/env python3
+#Suite de la partie 1
+
+    def recup(self):
+        r = 0        
+        for i in range(len(self.thematique)-1):
+            self.titre.append([])
+            for j in range(len(self.sous_thematique[i])):
+                self.titre[i].append([])
+                with open(self.path + "/CORD-19/Kaggle/target_tables" + '/' + str(self.thematique[i])+'/' +str(self.sous_thematique[i][j]), newline='',encoding = "utf8") as csvfile:
+                    reader = csv.reader(csvfile)
+                    L = []
+                    for ligne in reader:
+                        L.append(ligne)
+                    l = 0
+                    while(L[0][l]!= 'Study'):
+                        l+=1
+                    r += len(L)-1
+                    for k in range(1,len(L)):
+                        self.titre[i][j].append(L[k][l])
+        print(r)
+
+    def creer_titre(self):
+        file = open("les_titres.txt", "w") 
+        for i in range(len(self.thematique)-1):
+            file.write(f"{self.thematique[i]}\n \n")
+            for j in range(len(self.sous_thematique[i])):
+                file.write(f"{self.sous_thematique[i][j]}\n")
+                for k in range(len(self.titre[i][j])):
+                    file.write(f"{self.titre[i][j][k]}\n")
+                file.write("\n")
+            file.write("\n")
+            file.write("\n")
+        file.close()
+
+    def recup_csv(self):
+        with open(self.path + '/CORD-19/metadata.csv' , newline='',encoding = "utf8") as csvfile:
+            reader = csv.reader(csvfile)
+            L = []
+            for ligne in reader:
+                L.append(ligne)
+            l = 0
+            while(L[0][l]!= 'title'):
+                l+=1
+            for k in range(1,len(L)):
+                if L[k][l] not in self.name:
+                    self.name.append(L[k][l])
+        print(len(self.name))
+
+    def creer_name(self):
+        file = open("les_titres2.txt", "w") 
+        for i in range(len(self.name)):
+            file.write(f"{self.name[i]}\n \n")
+        file.close()   
