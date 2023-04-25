@@ -408,8 +408,6 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-print("Peuplement auteur : " , end = '\n')
-
 cur.execute("""DROP TABLE IF EXISTS Auteur2 CASCADE;
             CREATE TABLE Auteur2 ( Auteur_id INT PRIMARY KEY, Article_id INT, Titre VARCHAR(10485760), Nom VARCHAR(10485760), Prenom VARCHAR(10485760), Mail VARCHAR(10485760), Institution VARCHAR(10485760), Laboratoire VARCHAR(10485760) ) ;""")
                       
@@ -531,9 +529,6 @@ for i in range(len(df)):
             compteur_auteur += 1
             
 df2 = pd.read_sql('SELECT * FROM Auteur ORDER BY article_id', conn)
-
-print("Peuplement titre : " , end = '\n')
-
             
 cur.execute("""DROP TABLE IF EXISTS Article2 CASCADE;
             CREATE TABLE Article2 ( Article_id INT, Auteur VARCHAR(10485760), Titre VARCHAR(10485760), Date VARCHAR(10485760), Journal VARCHAR(10485760), Url VARCHAR(10485760), Thematique VARCHAR(10485760), Sous_thematique VARCHAR(10485760), Institution VARCHAR(10485760), Laboratoire VARCHAR(10485760)) ;""")
