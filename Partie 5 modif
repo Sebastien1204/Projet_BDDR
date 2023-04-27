@@ -1,0 +1,346 @@
+import pandas as pd
+import json
+import csv
+import os
+import psycopg2
+
+import numpy
+from psycopg2.extensions import register_adapter, AsIs
+
+def addapt_numpy_float64(numpy_float64):
+    return AsIs(numpy_float64)
+
+def addapt_numpy_int64(numpy_int64):
+    return AsIs(numpy_int64)
+
+register_adapter(numpy.float64, addapt_numpy_float64)
+register_adapter(numpy.int64, addapt_numpy_int64)
+
+path = r"C:/Users/Sébastien/Desktop/data_final.csv"             #On va utiliser le fichier avec les informations correctes.
+
+
+
+def auteurs(taille):                                                          #On crée une fonction auteur qui retournera une liste de listes avec, pour chaque liste, le titre de l'article, le prénom de l'auteur, son suffixe, son nom de famille, son email, son institution et son laboratoire.
+    liste_auteurs = []
+    liste_fichiers_pdf = []                                                 #Ces deux listes contiendront pour chaque article, le fichier pdf ou le fichier pmc associé.                                   
+    liste_fichiers_pmc = []
+    path_2 = r"C:/Users/Sébastien/Desktop/Projet BDDR 2/document_parses"
+    liste_fichiers_pdf_2 = os.listdir(path_2 + '/pdf_json')                 #Ici, on récupère simplement la liste des fichiers pdf présents dans les données de base, on vérifiera par la suite si le fichier pdf référencé dans le fichier data_final existe et donc peut nous donner des informations.
+    liste_fichiers_pmc_2 = os.listdir(path_2 + '/pmc_json')
+
+    data1 = pd.read_csv(path)
+    data = data1.sort_values('title')
+         
+    for k in range (1,len(data['pdf'])):
+        if (data['pdf'][k] != ""):
+            if ';' in data['pdf'][k]:                                     #On regarde s'il y a plusieurs fichiers pdf de référencés.
+                nb_info_pdf_0 = 0                                         #On initialise notre nombre d'informations à partir des fichiers pdf à 0.
+                for i in range(len(data['pdf'][k].split(';'))):           #On boucle sur la totalité des fichiers pdf référencés pour chaque article.
+                    nb_info_pdf = 0
+                    with open('C:/Users/Sébastien/Desktop/Projet BDDR 2/' + data['pdf'][k].split(';')[i].strip() , encoding="utf8") as file:      #On ouvre le premier fichier pdf.
+                        reader = json.load(file)
+                        
+                        if (len(reader["metadata"]["authors"]) > 0):                        #On calcule ensuite le nombre d'informations que nous donne chaque fichier pdf.
+                        
+                            for j in range(len(reader["metadata"]["authors"])):
+                                if (reader["metadata"]["authors"][j]["first"] != ""):
+                                    nb_info_pdf += 1
+                                if (reader["metadata"]["authors"][j]["middle"] != ""):
+                                    nb_info_pdf += 1
+                                if (reader["metadata"]["authors"][j]["last"] != ""):
+                                    nb_info_pdf += 1
+                                if (reader["metadata"]["authors"][j]["email"] != "" and reader["metadata"]["authors"][j]["email"] != None):
+                                    nb_info_pdf += 1
+                                if (len(reader["metadata"]["authors"][j]["affiliation"]) >= 1 ):
+                                    if (reader["metadata"]["authors"][j]["affiliation"]["institution"] != ""):
+                                        nb_info_pdf += 1
+                                    if (reader["metadata"]["authors"][j]["affiliation"]["laboratory"] != ""):
+                                        nb_info_pdf += 1
+                        else:
+                            nb_info_pdf = 0                                             #Dans le cas où il n'y a pas d'auteurs dans ce fichier.
+                                
+                    if (nb_info_pdf >= nb_info_pdf_0):
+                        nb_info_pdf_0 = nb_info_pdf                                     #Si le nombre d'info dans ce fichier est supérieur au max du nombre d'infos dans tous les fichiers pdf alors on le change.
+                        if (i == 0):
+                            liste_fichiers_pdf.append('C:/Users/Sébastien/Desktop/Projet BDDR 2/' + data['pdf'][k].split(';')[i].strip())     #On incrémente notre liste de fichiers pdf par ce même fichier.
+                        elif (i >= 1):
+                            liste_fichiers_pdf.pop()                                                                                            #Ici, on est dans le cas où on avait déjà incrémenté notre liste de fichiers pdf donc on retire la dernière valeur et on la remplace par la nouvelle qui donne plus d'infos.
+                            liste_fichiers_pdf.append('C:/Users/Sébastien/Desktop/Projet BDDR 2/' + data['pdf'][k].split(';')[i].strip())
+                       
+            else :
+                liste_fichiers_pdf.append('C:/Users/Sébastien/Desktop/Projet BDDR 2/' + data['pdf'][k].strip())       #Dans le cas où il n'y a qu'un seul fichier pdf de référencé pour cet article.
+        else :
+            liste_fichiers_pdf.append('')                                                                               #Dans le cas où la case de la colonne pdf est vide.
+            
+            
+        if (data['pmc'][k] != ""):
+            if ';' in data['pmc'][k]:
+                for i in range(len(data['pmc'][k].split(';'))):
+                    liste_fichiers_pmc.append('C:/Users/Sébastien/Desktop/Projet BDDR 2/' + data['pmc'][k].split(';')[i].strip())         #On a remarqué que les fichiers pmc étaient référencés de manière unique sur chaque article donc pas besoin de calculer le max d'infos sur ces fichiers.
+            else :
+                liste_fichiers_pmc.append('C:/Users/Sébastien/Desktop/Projet BDDR 2/' + data['pmc'][k].strip())
+        else :
+            liste_fichiers_pmc.append('')
+                
+
+    for k in range(taille):
+            
+        nb_info_pdf = 0
+        nb_info_pmc = 0
+            
+        if (len(liste_fichiers_pdf[k].split('/')) == 8 and liste_fichiers_pdf[k].split('/')[7] in liste_fichiers_pdf_2):                #On vérifie que mon fichier pdf n'est pas un caractère vide en regardant la taille du split puis on vérifie qu'il existe bien dans nos fichiers pdf de base.
+            with open(liste_fichiers_pdf[k] , encoding="utf8") as file:
+                reader = json.load(file)
+                    
+                if (len(reader["metadata"]["authors"]) > 0):
+                        
+                    for j in range(len(reader["metadata"]["authors"])):
+                        if (reader["metadata"]["authors"][j]["first"] != ""):
+                            nb_info_pdf += 1
+                        if (reader["metadata"]["authors"][j]["middle"] != ""):
+                            nb_info_pdf += 1
+                        if (reader["metadata"]["authors"][j]["last"] != ""):
+                            nb_info_pdf += 1
+                        if (reader["metadata"]["authors"][j]["email"] != "" and reader["metadata"]["authors"][j]["email"] != None):
+                            nb_info_pdf += 1
+                        if (len(reader["metadata"]["authors"][j]["affiliation"]) >= 1 ):
+                            if (reader["metadata"]["authors"][j]["affiliation"]["institution"] != ""):
+                                nb_info_pdf += 1
+                            if (reader["metadata"]["authors"][j]["affiliation"]["laboratory"] != ""):
+                                nb_info_pdf += 1                                                                                        #On calcule de nouveau le nombre d'infos données  par le fichier pdf de chaque article.
+                    
+            
+        if (len(liste_fichiers_pmc[k].split('/')) == 8 and liste_fichiers_pmc[k].split('/')[7] in liste_fichiers_pmc_2):
+            with open(liste_fichiers_pmc[k] , encoding="utf8") as file:
+                reader = json.load(file)
+                
+                if (len(reader["metadata"]["authors"]) > 0):
+                        
+                    for j in range(len(reader["metadata"]["authors"])):
+                        if (reader["metadata"]["authors"][j]["first"] != ""):
+                            nb_info_pmc += 1
+                        if (reader["metadata"]["authors"][j]["middle"] != ""):
+                            nb_info_pmc += 1
+                        if (reader["metadata"]["authors"][j]["last"] != ""):
+                            nb_info_pmc += 1
+                        if (reader["metadata"]["authors"][j]["email"] != "" and reader["metadata"]["authors"][j]["email"] != None):
+                            nb_info_pmc += 1
+                        if (len(reader["metadata"]["authors"][j]["affiliation"]) >= 1 ):
+                            if (reader["metadata"]["authors"][j]["affiliation"]["institution"] != ""):
+                                nb_info_pmc += 1
+                            if (reader["metadata"]["authors"][j]["affiliation"]["laboratory"] != ""):
+                                nb_info_pmc += 1                                                                                        #On calcule également le nombre d'infos données par le fichier pmc de chaque article.
+                
+        if (nb_info_pdf > nb_info_pmc):                                                                             #Dans le cas où le pdf donne plus d'infos que le pmc;
+            with open(liste_fichiers_pdf[k] , encoding="utf8") as file :
+                reader = json.load(file)
+                if (len(reader["metadata"]["authors"]) > 0):                                                    
+                    for j in range(len(reader["metadata"]["authors"])):                                             #On boucle sur chaque auteur d'un article.
+                        liste_1_titre = []                                                                          #On  crée une liste qui va être incrémenté pour chaque auteur d'un article. 
+                        liste_1_titre.append(L['title'][k+1])                                                  #La première case de la liste correspond au titre de l'article.
+                        liste_1_titre.append(reader["metadata"]["authors"][j]["first"])                             #On récupère son prénom.
+                        if (len(reader["metadata"]["authors"][j]["middle"]) >= 1):
+                            liste_1_titre.append(''.join(reader["metadata"]["authors"][j]["middle"][0]))            #On récupère son suffixe s'il existe sinon on met un caractère vide.
+                        else:
+                            liste_1_titre.append('')
+                        liste_1_titre.append(reader["metadata"]["authors"][j]["last"])                              #On récupère son nom de famille.
+                        if (reader["metadata"]["authors"][j]["email"] == None):
+                            liste_1_titre.append('')
+                        else : 
+                            liste_1_titre.append(reader["metadata"]["authors"][j]["email"])                         #On récupère son email.
+                        if (reader["metadata"]["authors"][j]["affiliation"] != {}):
+                            liste_1_titre.append(reader["metadata"]["authors"][j]["affiliation"]["institution"])    #On récupère son institution.
+                            liste_1_titre.append(reader["metadata"]["authors"][j]["affiliation"]["laboratory"])     #On récupère son laboratoire.
+                        else:
+                            liste_1_titre.append('')
+                            liste_1_titre.append('')
+                        liste_auteurs.append(liste_1_titre)                                                         #On incrémente notre liste finale par cette sous-liste qu'on vient de créer.
+                            
+                                
+        elif (nb_info_pmc > nb_info_pdf):                                                                           #On effectue la même chose mais dans le cas où le nombre d'infos est plus important dans le fichier pmc.
+            with open(liste_fichiers_pmc[k] , encoding="utf8") as file :
+                reader = json.load(file)
+                if (len(reader["metadata"]["authors"]) > 0):
+                    for j in range(len(reader["metadata"]["authors"])):
+                        liste_1_titre = []
+                        liste_1_titre.append(L['title'][k+1])
+                        liste_1_titre.append(reader["metadata"]["authors"][j]["first"])
+                        if (len(reader["metadata"]["authors"][j]["middle"]) >= 1):
+                            liste_1_titre.append(''.join(reader["metadata"]["authors"][j]["middle"][0]))
+                        else:
+                            liste_1_titre.append('')
+                        liste_1_titre.append(reader["metadata"]["authors"][j]["last"])
+                        if (reader["metadata"]["authors"][j]["email"] == None):
+                            liste_1_titre.append('')
+                        else:
+                            liste_1_titre.append(reader["metadata"]["authors"][j]["email"])
+                        if (reader["metadata"]["authors"][j]["affiliation"] != {}):
+                            liste_1_titre.append(reader["metadata"]["authors"][j]["affiliation"]["institution"])
+                            liste_1_titre.append(reader["metadata"]["authors"][j]["affiliation"]["laboratory"])
+                        else:
+                            liste_1_titre.append('')
+                            liste_1_titre.append('')
+                        liste_auteurs.append(liste_1_titre)
+          
+        elif (nb_info_pmc == nb_info_pdf and nb_info_pmc != 0):                                                 #Dans le cas où les deux fichiers donnent le même nombre d'infos non nul.
+            with open(liste_fichiers_pmc[k] , encoding="utf8") as file :
+                reader = json.load(file)
+                if (len(reader["metadata"]["authors"]) > 0):
+                    for j in range(len(reader["metadata"]["authors"])):
+                        liste_1_titre = []
+                        liste_1_titre.append(L['title'][k+1])
+                        liste_1_titre.append(reader["metadata"]["authors"][j]["first"])
+                        if (len(reader["metadata"]["authors"][j]["middle"]) >= 1):
+                            liste_1_titre.append(''.join(reader["metadata"]["authors"][j]["middle"][0]))
+                        else:
+                            liste_1_titre.append('')
+                        liste_1_titre.append(reader["metadata"]["authors"][j]["last"])
+                        if (reader["metadata"]["authors"][j]["email"] == None):
+                            liste_1_titre.append('')
+                        else:
+                            liste_1_titre.append(reader["metadata"]["authors"][j]["email"])
+                        if (reader["metadata"]["authors"][j]["affiliation"] != {}):
+                            liste_1_titre.append(reader["metadata"]["authors"][j]["affiliation"]["institution"])
+                            liste_1_titre.append(reader["metadata"]["authors"][j]["affiliation"]["laboratory"])
+                        else:
+                            liste_1_titre.append('')
+                            liste_1_titre.append('')
+                        liste_auteurs.append(liste_1_titre)
+
+                               
+        else :                                                                                                        #Dans le cas où les deux fichiers donnent 0 info.
+            if (liste_fichiers_pdf[k] == '' and liste_fichiers_pmc[k] == ''):
+                if (data['authors'][k+1] != ""):
+                    if (";" in data['authors'][k+1]):
+                        for i in range(len(data['authors'][k+1].split(';'))):                                         #On va dans la colonne auteurs et à chaque auteur référencé on crée une liste.
+                            if ("," in data['authors'][k+1].split(';')[i]):                                           #Dans le cas où le nom et le prénom sont séparés par une virgule.
+                                liste_1_titre = []
+                                liste_1_titre.append(data['title'][k+1])                                              #On récupère le titre de l'article.
+                                if (len(data['authors'][k+1].split(';')[i].split(',')) >= 2):                         #Dans le cas où il y a au moins une virgule.
+                                    liste_1_titre.append(data['authors'][k+1].split(';')[i].split(',')[1].strip())    #On récupère le prénom.
+                                    liste_1_titre.append('')                                                          #Le suffixe est vide car pas présent.
+                                    liste_1_titre.append(data['authors'][k+1].split(';')[i].split(',')[0].strip())    #On récupère le nom de famille.
+                                elif (len(data['authors'][k+1].split(';')[i].split(',')) == 1):                       #Dans le cas où la virgule se trouve à la fin sans prénom
+                                    liste_1_titre.append(data['authors'][k+1].split(';')[i].split(',')[0].strip())    #On récupère le nom.
+                                    liste_1_titre.append('')                                                          #Le suffixe est vide.
+                                    liste_1_titre.append('')                                                          #Le prénom est vide.
+                                else :
+                                    liste_1_titre.append('')
+                                    liste_1_titre.append('')
+                                    liste_1_titre.append('')
+                                liste_1_titre.append('')
+                                liste_1_titre.append('')
+                                liste_1_titre.append('')
+                                liste_auteurs.append(liste_1_titre)
+                            else:                                                                                     #Dans le cas où il n'y a pas de virgule.
+                                liste_1_titre = []
+                                liste_1_titre.append(data['title'][k+1])
+                                liste_1_titre.append(data['authors'][k+1].split(';')[i])                              #On récupère chaque auteur séparé par un point virgule.
+                                liste_1_titre.append('')
+                                liste_1_titre.append('')
+                                liste_1_titre.append('')
+                                liste_1_titre.append('')
+                                liste_1_titre.append('')
+                                liste_auteurs.append(liste_1_titre)
+                        
+                else:                                                                                                 #Dans le cas où il n' y a pas de point virgule, donc il n'y a qu'un seul auteur.
+                    liste_1_titre = []
+                    liste_1_titre.append(data['title'][k+1])
+                    if ("," in  data['authors'][k+1]):
+                        if (len(data['authors'][k+1].split(',')) >= 2):
+                            liste_1_titre.append(data['authors'][k+1].split(',')[1].strip())
+                            liste_1_titre.append('')
+                            liste_1_titre.append(data['authors'][k+1].split(',')[0].strip())
+                        elif (len(data['authors'][k+1].split(',')) == 1):
+                            liste_1_titre.append(data['authors'][k+1].strip())
+                            liste_1_titre.append('')
+                            liste_1_titre.append('')
+                        else :
+                            liste_1_titre.append('')
+                            liste_1_titre.append('')
+                            liste_1_titre.append('')
+                        liste_1_titre.append('')
+                        liste_1_titre.append('')
+                        liste_1_titre.append('')
+                        liste_auteurs.append(liste_1_titre)
+                    else :
+                        liste_1_titre = []
+                        liste_1_titre.append(data['title'][k+1])
+                        liste_1_titre.append('')
+                        liste_1_titre.append('')
+                        liste_1_titre.append('')
+                        liste_1_titre.append('')
+                        liste_1_titre.append('')
+                        liste_1_titre.append('')
+                        liste_auteurs.append(liste_1_titre)
+                    
+            else:                                                                                               #Dans le cas où la case de la colonne auteur est vide.
+                liste_1_titre = []
+                liste_1_titre.append(data['title'][k+1])                                                      #On récupère quand même le titre sans pouvoir récupérer d'autre information.
+                liste_1_titre.append('')
+                liste_1_titre.append('')
+                liste_1_titre.append('')
+                liste_1_titre.append('')
+                liste_1_titre.append('')
+                liste_1_titre.append('')
+                liste_auteurs.append(liste_1_titre)   
+
+    return liste_auteurs
+
+
+                                                                     
+
+def titre():
+    taille_des_donnees = 10     
+    liste_auteurs = auteurs(taille_des_donnees) #La taille de nos données correspond à celle de data - 1 car on ne s'intéresse pas à la première ligne qui celle du nom des colonnes.
+    liste_titre = []                            #Il s'agit de la liste finale.
+    liste_compteur_titre = []                   #Cette liste sera composée du nombre d'auteurs qu'il y a pour chaque article.
+    liste_titre_sans_separation = []            #Liste des titres mais avec des doublons (taille = nombre d'auteurs).
+    liste_titre_deja_compte = []                #Liste mais sans doublons (taille = nombre exact d'articles).
+    
+    donnees1 = pd.read_csv(path)
+    donnees = donnees1.sort_values("title")
+    
+    for i in range(len(liste_auteurs)):
+        liste_titre_sans_separation.append(liste_auteurs[i][0])                                                 #On récupère tous les titres qui se situent dans la première case de chaque sous-listes de la liste des auteurs d'où le fait de l'avoir mis dans la première liste.
+
+    liste_titre_deja_compte.append(liste_titre_sans_separation[0])                                              #On initialise la liste des titres déjà comptés au premier titre.
+    liste_compteur_titre.append(liste_titre_sans_separation.count(liste_titre_sans_separation[0]))              #On compte le nombre d'occurences de ce titre dans la liste précédente et on l'ajoute à la liste des compteurs.
+        
+    for i in range(1,len(liste_titre_sans_separation)):                                                         #On parcourt la liste des titres avec doublons.
+            
+        if (liste_titre_sans_separation[i] not in liste_titre_deja_compte):                                     #Dans le cas où le titre n'existe pas dans la liste des titres sans doublons.
+                
+            liste_compteur_titre.append(liste_titre_sans_separation.count(liste_titre_sans_separation[i]))      #On incrémente la liste des compteurs par le nombre d'occurences de ce titre dans la liste avec les doublons.
+            liste_titre_deja_compte.append(liste_titre_sans_separation[i])                                      #On incrémente la liste des titres déjà comptés par ce titre.
+            
+    k = 0                                                                           #Il s'agit d'un compteur qui va traverser tous les articles.
+
+    for i in range(len(liste_compteur_titre)):                                                            
+
+        for j in range(liste_compteur_titre[i]):                                    #Ici on prend la première valeur de la liste des compteurs et on tourne ce nombre de fois.
+                    
+            liste_1_titre = []                                                  #On crée une sous-liste.
+            
+            liste_1_titre.append(donnees['date'][k])                     #on récupère la date.
+                
+            liste_1_titre.append(donnees['journal'][k])                  #On récupère le journal.
+            
+            liste_1_titre.append(donnees['url'][k])                      #On récupère l'url.
+            
+            if (donnees['thematique'][k] == 'Inconnu'):
+                liste_1_titre.append('')
+            else :
+                liste_1_titre.append(donnees['thematique'][k])           #On récupère la thématique sinon on met un caractère vide.
+                
+            if (donnees['sous-thematique'][k] == 'Inconnu'):
+                liste_1_titre.append('')            
+            else :
+                liste_1_titre.append(donnees['sous-thematique'][k])      #On récupère la sous-thématique sinon on met un caractère vide.
+
+            
+            liste_titre.append(liste_1_titre)                                   #On incrémente notre liste finale par cette sous-liste.
+                
+        k += 1                                                                  #On a traversé tous les auteurs d'un article donc on peut passer au suivant.
+        
+    return liste_titre      
