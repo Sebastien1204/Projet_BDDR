@@ -524,3 +524,11 @@ def index65(request):
         'transitions': transitions
     }
     return render(request, 'bouton_cliquable.html', context)
+
+
+def index65(request):
+    transition = Lien_auteur_article.objects.all()
+    context = {
+        'transitions': transitions
+    }
+    return render(request, 'bouton_cliquable1.html', context)
