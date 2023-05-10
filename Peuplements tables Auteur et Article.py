@@ -382,23 +382,23 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 cur.execute("""DROP TABLE IF EXISTS Auteur2 CASCADE;
-            CREATE TABLE Auteur2 ( Auteur_id INT PRIMARY KEY, Article_id INT, Titre VARCHAR(10485760), Nom VARCHAR(10485760), Prenom VARCHAR(10485760), Mail VARCHAR(10485760), Institution VARCHAR(10485760), Laboratoire VARCHAR(10485760) ) ;""")
+            CREATE TABLE Auteur2 ( Auteur_id INT PRIMARY KEY,, Titre VARCHAR(10485760), Nom VARCHAR(10485760), Prenom VARCHAR(10485760), Mail VARCHAR(10485760), Institution VARCHAR(10485760), Laboratoire VARCHAR(10485760) ) ;""")
                       
 
 cur.execute("""DROP TABLE IF EXISTS Article2 CASCADE;
             CREATE TABLE Article2 ( Article_id INT, Auteur VARCHAR(10485760), Titre VARCHAR(10485760), Date VARCHAR(10485760), Journal VARCHAR(10485760), Url VARCHAR(10485760), Thematique VARCHAR(10485760), Sous_thematique VARCHAR(10485760), Institution VARCHAR(10485760), Laboratoire VARCHAR(10485760)) ;""")
 
-cursor.execute("""DROP TABLE IF EXISTS Lien_auteur_article2 CASCADE;
+#Création de la table de transition Auteur Article
+
+cursor.execute("""DROP TABLE IF EXISTS Lien_auteur_article2 CASCADE;    
             CREATE TABLE transition_table (
                 id SERIAL PRIMARY KEY,
-                model_a_id INT,
-                model_b_id INT,
+                Auteur INT,
+                Article INT,
                 FOREIGN KEY Article_id REFERENCES Article2(id),
                 FOREIGN KEY Auteur_id REFERENCES Auteur2(id)
             )
         """)
-
-
 
         
 for i in range (len(A)):
@@ -406,11 +406,11 @@ for i in range (len(A)):
         if (i < len(A)-1):
             if(A[i][0] == A[i+1][0]):
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id,  Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][0],A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
+                            (i+1,compteur_titre,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -420,11 +420,11 @@ for i in range (len(A)):
                             (compteur_titre,A[i][3]+" "+A[i][1],A[i][0],A[i][7],A[i][8],A[i][9],A[i][10],A[i][11],A[i][5], A[i][6]))
             else :
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id,  Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][0],A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
+                            (i+1,compteur_titre,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -437,11 +437,11 @@ for i in range (len(A)):
         else :
             if (A[i][0] == A[i-1][0]):
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id,  Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][0],A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
+                            (i+1,compteur_titre,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -451,11 +451,11 @@ for i in range (len(A)):
                             (compteur_titre,A[i][3]+" "+A[i][1],A[i][0],A[i][7],A[i][8],A[i][9],A[i][10],A[i][11],A[i][5], A[i][6]))
             else:
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][0],A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
+                            (i+1,compteur_titre,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -469,7 +469,7 @@ for i in range (len(A)):
         if (i < len(A)-1):
             if(A[i][0] == A[i+1][0]):
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id,  Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
@@ -483,7 +483,7 @@ for i in range (len(A)):
                             (compteur_titre,A[i][3]+" "+A[i][1],A[i][0],A[i][7],A[i][8],A[i][9],A[i][10],A[i][11],A[i][5], A[i][6]))
             else :
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
@@ -500,7 +500,7 @@ for i in range (len(A)):
         else :
             if (A[i][0] == A[i-1][0]):
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
@@ -514,7 +514,7 @@ for i in range (len(A)):
                             (compteur_titre,A[i][3]+" "+A[i][1],A[i][0],A[i][7],A[i][8],A[i][9],A[i][10],A[i][11],A[i][5], A[i][6]))
             else :
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
@@ -543,34 +543,34 @@ for i in range(len(df)):
     if (i < len(df)-1):
         if (df['nom'][i]+" "+df['prenom'][i] == df['nom'][i+1]+" "+df['prenom'][i+1]):
             cur.execute("""INSERT INTO Auteur 
-                        (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                        (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                         VALUES
                         (%s,%s,%s,%s,%s,%s,%s,%s)
                         """,
-                        (compteur_auteur,df['article_id'][i],df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
+                        (compteur_auteur,df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
         else :
             cur.execute("""INSERT INTO Auteur 
-                        (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                        (Auteur_id,  Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                         VALUES
                         (%s,%s,%s,%s,%s,%s,%s,%s)
                         """,
-                        (compteur_auteur,df['article_id'][i],df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
+                        (compteur_auteur,df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
             compteur_auteur += 1
     else:
         if (df['nom'][i-1]+" "+df['prenom'][i-1] == df['nom'][i]+" "+df['prenom'][i]):
             cur.execute("""INSERT INTO Auteur 
-                        (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                        (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                         VALUES
                         (%s,%s,%s,%s,%s,%s,%s,%s)
                         """,
-                        (compteur_auteur,df['article_id'][i],df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
+                        (compteur_auteur,df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
         else :
             cur.execute("""INSERT INTO Auteur 
-                        (Auteur_id, Article_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                        (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
                         VALUES
                         (%s,%s,%s,%s,%s,%s,%s,%s)
                         """,
-                        (compteur_auteur,df['article_id'][i],df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
+                        (compteur_auteur,df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
             compteur_auteur += 1
 
 
@@ -585,9 +585,160 @@ cur.execute("DELETE FROM Auteur WHERE titre='';")
 cur.execute("DELETE FROM Article WHERE titre='';")
 
 cur.execute(""" INSERT INTO Transition_auteur_article (Auteur, Article)
-            SELECT Auteur.Article_id, Article.Article_id
+            SELECT Auteur.Auteur_id, Article.Article_id
             FROM Auteur2, Article2
-            WHERE Auteur.Article_id == Article.Article_id """)
+            WHERE Auteur.Nom + ' ' + Auteur.prenom == Article.auteur 
+            AND Auteur.article == Article.titre""")
+
+#Fin de la table de transition
+
+
+
+journaux = pd.read_sql('SELECT * FROM Article', conn)
+journaux.drop_duplicates(subset=['titre'],inplace=True)
+
+journaux = journaux['journal'].value_counts()
+journaux = journaux.to_frame()
+
+cur.execute("""DROP TABLE IF EXISTS Journaux CASCADE;
+            CREATE TABLE Journaux ( Journal_id INT PRIMARY KEY, Journal VARCHAR(10485760), Quantite INT ) ;""")
+            
+for i in range(len(journaux)):
+    cur.execute("""INSERT INTO Journaux 
+                (Journal_id, Journal, Quantite)
+                VALUES
+                (%s,%s,%s)
+                """,
+                (i+1,journaux.index[i],journaux['journal'][i]))
+    
+    
+dates = pd.read_sql('SELECT * FROM Article', conn)
+dates.drop_duplicates(subset=['titre'],inplace=True)
+
+dates = dates['date'].value_counts()
+dates = dates.to_frame()
+
+cur.execute("""DROP TABLE IF EXISTS Dates CASCADE;
+            CREATE TABLE Dates ( Date_id INT PRIMARY KEY, Date VARCHAR(10485760), Quantite INT ) ;""")
+            
+for i in range(len(dates)):
+    cur.execute("""INSERT INTO Dates 
+                (Date_id, Date, Quantite)
+                VALUES
+                (%s,%s,%s)
+                """,
+                (i+1,dates.index[i],dates['date'][i]))
+    
+laboratoires = pd.read_sql('SELECT * FROM Article', conn)
+laboratoires.drop_duplicates(subset=['titre'],inplace=True)
+
+laboratoires = laboratoires['laboratoire'].value_counts()
+laboratoires = laboratoires.to_frame()
+
+cur.execute("""DROP TABLE IF EXISTS Laboratoires CASCADE;
+            CREATE TABLE Laboratoires ( Laboratoire_id INT PRIMARY KEY, Laboratoire VARCHAR(10485760), Quantite INT ) ;""")
+            
+for i in range(len(laboratoires)):
+    cur.execute("""INSERT INTO Laboratoires 
+                (Laboratoire_id, Laboratoire, Quantite)
+                VALUES
+                (%s,%s,%s)
+                """,
+                (i+1,laboratoires.index[i],laboratoires['laboratoire'][i]))
+    
+institutions = pd.read_sql('SELECT * FROM Article', conn)
+institutions.drop_duplicates(subset=['titre'],inplace=True)
+
+institutions = institutions['institution'].value_counts()
+institutions = institutions.to_frame()
+
+cur.execute("""DROP TABLE IF EXISTS Institutions CASCADE;
+            CREATE TABLE Institutions ( Institution_id INT PRIMARY KEY, Institution VARCHAR(10485760), Quantite INT ) ;""")
+            
+for i in range(len(institutions)):
+    cur.execute("""INSERT INTO Institutions 
+                (Institution_id, Institution, Quantite)
+                VALUES
+                (%s,%s,%s)
+                """,
+                (i+1,institutions.index[i],institutions['institution'][i]))
+
+
+cur.close()
+conn.commit()
+conn.close()
+
+
+
+journaux = pd.read_sql('SELECT * FROM Article', conn)
+journaux.drop_duplicates(subset=['titre'],inplace=True)
+
+journaux = journaux['journal'].value_counts()
+journaux = journaux.to_frame()
+
+cur.execute("""DROP TABLE IF EXISTS Journaux CASCADE;
+            CREATE TABLE Journaux ( Journal_id INT PRIMARY KEY, Journal VARCHAR(10485760), Quantite INT ) ;""")
+            
+for i in range(len(journaux)):
+    cur.execute("""INSERT INTO Journaux 
+                (Journal_id, Journal, Quantite)
+                VALUES
+                (%s,%s,%s)
+                """,
+                (i+1,journaux.index[i],journaux['journal'][i]))
+    
+    
+dates = pd.read_sql('SELECT * FROM Article', conn)
+dates.drop_duplicates(subset=['titre'],inplace=True)
+
+dates = dates['date'].value_counts()
+dates = dates.to_frame()
+
+cur.execute("""DROP TABLE IF EXISTS Dates CASCADE;
+            CREATE TABLE Dates ( Date_id INT PRIMARY KEY, Date VARCHAR(10485760), Quantite INT ) ;""")
+            
+for i in range(len(dates)):
+    cur.execute("""INSERT INTO Dates 
+                (Date_id, Date, Quantite)
+                VALUES
+                (%s,%s,%s)
+                """,
+                (i+1,dates.index[i],dates['date'][i]))
+    
+laboratoires = pd.read_sql('SELECT * FROM Article', conn)
+laboratoires.drop_duplicates(subset=['titre'],inplace=True)
+
+laboratoires = laboratoires['laboratoire'].value_counts()
+laboratoires = laboratoires.to_frame()
+
+cur.execute("""DROP TABLE IF EXISTS Laboratoires CASCADE;
+            CREATE TABLE Laboratoires ( Laboratoire_id INT PRIMARY KEY, Laboratoire VARCHAR(10485760), Quantite INT ) ;""")
+            
+for i in range(len(laboratoires)):
+    cur.execute("""INSERT INTO Laboratoires 
+                (Laboratoire_id, Laboratoire, Quantite)
+                VALUES
+                (%s,%s,%s)
+                """,
+                (i+1,laboratoires.index[i],laboratoires['laboratoire'][i]))
+    
+institutions = pd.read_sql('SELECT * FROM Article', conn)
+institutions.drop_duplicates(subset=['titre'],inplace=True)
+
+institutions = institutions['institution'].value_counts()
+institutions = institutions.to_frame()
+
+cur.execute("""DROP TABLE IF EXISTS Institutions CASCADE;
+            CREATE TABLE Institutions ( Institution_id INT PRIMARY KEY, Institution VARCHAR(10485760), Quantite INT ) ;""")
+            
+for i in range(len(institutions)):
+    cur.execute("""INSERT INTO Institutions 
+                (Institution_id, Institution, Quantite)
+                VALUES
+                (%s,%s,%s)
+                """,
+                (i+1,institutions.index[i],institutions['institution'][i]))
+
 cur.close()
 conn.commit()
 conn.close()
