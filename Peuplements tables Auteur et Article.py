@@ -399,6 +399,7 @@ cursor.execute("""DROP TABLE IF EXISTS Lien_auteur_article2 CASCADE;
                 FOREIGN KEY Auteur_id REFERENCES Auteur2(id)
             )
         """)
+# Peut-etre que le Article2(id) est Article(Article_id) ou Article_id
 
         
 for i in range (len(A)):
@@ -587,8 +588,10 @@ cur.execute("DELETE FROM Article WHERE titre='';")
 cur.execute(""" INSERT INTO Transition_auteur_article (Auteur, Article)
             SELECT Auteur.Auteur_id, Article.Article_id
             FROM Auteur2, Article2
-            WHERE Auteur.Nom + ' ' + Auteur.prenom == Article.auteur 
+            WHERE Auteur.nom + ' ' + Auteur.prenom == Article.auteur 
             AND Auteur.article == Article.titre""")
+
+#Peut-etre qu'il y a des Maj à nom et prenom et ....
 
 #Fin de la table de transition
 
