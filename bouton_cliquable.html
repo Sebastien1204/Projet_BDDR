@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ma page</title>
+</head>
+<body>
+    <h1>Boutons cliquables</h1>
+
+    {% for transition in transitions %}
+        <h2>Transition {{ transition.id }}</h2>
+        <p>Table A: {{ transition.table_a }}</p>
+        <p>Table B: {{ transition.table_b }}</p>
+        <button onclick="window.location.href='/table_a/{{ transition.table_a.id }}/'">Voir Table A</button>
+        <button onclick="window.location.href='/table_b/{{ transition.table_b.id }}/'">Voir Table B</button>
+    {% endfor %}
+</body>
+</html>
