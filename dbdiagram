@@ -1,0 +1,90 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table Thematique {
+  id int
+  nom str
+  sous_thematique_id serial
+}
+
+Table Sous_thematique {
+  id int
+  nom str
+  sous_thematique_id serial
+}
+
+Table Article {
+  id int
+  titre str
+}
+
+Table Auteur {
+  id int
+  titre str
+}
+
+Table Date {
+  id int
+  titre str
+}
+
+Table Institution {
+  id int
+  titre str
+}
+
+Table Laboratoire {
+  id int
+  titre str
+}
+
+Table Lien_article_auteur {
+  id int
+  titre str
+}
+
+Table Lien_article_laboratoire {
+  id int
+  titre str
+}
+
+Table Lien_article_institution {
+  id int
+  titre str
+}
+
+Table Lien_auteur_laboratoire {
+  id int
+  titre str
+}
+
+Table Lien_auteur_institution {
+  id int
+  titre str
+}
+
+Ref: Sous_thematique.id > Thematique.id
+
+Ref: Institution.id > Lien_article_institution.id
+
+Ref: Article.id > Lien_article_institution.id
+
+Ref: Auteur.id > Lien_article_auteur.id
+
+Ref: Article.id > Lien_article_auteur.id
+
+Ref: Laboratoire.id > Lien_article_laboratoire.id
+
+Ref: Article.id > Lien_article_laboratoire.id
+
+Ref: Institution.id > Lien_auteur_institution.id
+
+Ref: Auteur.id > Lien_auteur_institution.id
+
+Ref: Laboratoire.id > Lien_auteur_laboratoire.id
+
+Ref: Auteur.id > Lien_auteur_laboratoire.id
+
+Ref: Article.id > Date.id
+
+Ref: Article.id > Sous_thematique.id
