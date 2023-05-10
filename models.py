@@ -86,9 +86,15 @@ class Laboratoires(models.Model):
 class Lien_laboratoire_article(models.Model):
     laboratoire = models.ForeignKey(Laboratoire, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    date_joined = models.DateField()
-    invite_reason = models.CharField(max_length=64)
+    class Meta :
+        managed = False
+        db_table = 'auteur'
+"""
 
+"""
+class Lien_laboratoire_auteur(models.Model):
+    laboratoire = models.ForeignKey(Laboratoire, on_delete=models.CASCADE)
+    auteur = models.ForeignKey(Auteur, on_delete=models.CASCADE)
     class Meta :
         managed = False
         db_table = 'auteur'
@@ -100,3 +106,21 @@ class Institutions(models.Model):
     class Meta :
         managed = False
         db_table = 'institutions'
+        
+"""
+class Lien_institution_article(models.Model):
+    institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    class Meta :
+        managed = False
+        db_table = 'auteur'
+"""
+
+"""
+class Lien_institution_auteur(models.Model):
+    institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
+    auteur = models.ForeignKey(Auteur, on_delete=models.CASCADE)
+    class Meta :
+        managed = False
+        db_table = 'auteur'
+"""
