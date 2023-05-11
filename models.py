@@ -20,8 +20,6 @@ class Sous_thematique(models.Model):
 
 class Auteur(models.Model):
     auteur_id = models.AutoField(primary_key = True)
-    article = models.ManyToManyField(Article, through="lien_auteur_article")
-    titre = models.CharField(max_length = 10485760)
     nom = models.CharField(max_length = 10485760)
     prenom = models.CharField(max_length = 10485760)
     mail = models.CharField(max_length = 10485760)
