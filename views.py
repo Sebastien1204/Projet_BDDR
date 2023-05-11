@@ -12,18 +12,18 @@ def index(request):
     return render (request,'affichage_accueil.html')
 
 def index2(request):
-    a = thematique.objects.all()
+    a = Thematique.objects.all()
     return render(request,'affichage_thematique.html',{'thematique':a})
 
 def index3(request):
-    a = sous_thematique.objects.all()
+    a = Sous_thematique.objects.all()
     return render(request,'affichage_sous_thematique.html',{'sous_thematique':a})
 
 def index4(request):
     return render(request,'recherche_thematique.html')
     
 def index5(request):
-    all_thematique = thematique.objects.all()
+    all_thematique = Thematique.objects.all()
     thematique_qs = all_thematique
     for i in dict(request.GET):
         if i == 'thematique_id':
@@ -43,7 +43,7 @@ def index6(request):
     return render(request,'recherche_sous_thematique.html')
     
 def index7(request):
-    all_sous_thematique = sous_thematique.objects.all()
+    all_sous_thematique = Sous_thematique.objects.all()
     sous_thematique_qs = all_sous_thematique
     for i in dict(request.GET):
         if i == 'sous_thematique_id':
@@ -67,7 +67,7 @@ def index8(request):
     return render(request,'accueil_recherche_article.html')
 
 def index9(request):
-    a = article.objects.all()[1000000:1000020]
+    a = Article.objects.all()[1000000:1000020]
     return render(request,'accueil_article.html',{'article':a})
 
 def index10(request):
@@ -77,7 +77,7 @@ def index11(request):
     return render(request,'choix_sous_thematique_article.html')
 
 def index12(request):
-    all_sous_thematique = sous_thematique.objects.all()
+    all_sous_thematique = Sous_thematique.objects.all()
     sous_thematique_qs = all_sous_thematique
     for i in dict(request.GET):
         if i == 'thematique_id':
@@ -90,7 +90,7 @@ def index12(request):
     })
 
 def index13(request):
-    all_sous_thematique = sous_thematique.objects.all()
+    all_sous_thematique = Sous_thematique.objects.all()
     sous_thematique_qs = all_sous_thematique
     for i in dict(request.GET):
         if i == 'sous_thematique_id':
@@ -121,14 +121,14 @@ def index19(request):
     return render(request,'accueil_auteur.html')
 
 def index20(request):
-    a = auteur.objects.all()[1000000:1000020]
+    a = Auteur.objects.all()[1000000:1000020]
     return render(request,'accueil_auteur.html',{'auteur':a})
 
 def index21(request):
     return render(request,'recherche_auteur.html')
 
 def index22(request):
-    all_auteur = auteur.objects.all()
+    all_auteur = Auteur.objects.all()
     auteur_qs = all_auteur
     for i in dict(request.GET):
         if i == 'nom':
@@ -164,7 +164,7 @@ def index27(request):
     return render(request,'choix_laboratoire_article.html')
 
 def index28(request):
-    all_article = article.objects.all()
+    all_article = Article.objects.all()
     article_qs = all_article
     for i in dict(request.GET):
         if i == 'thematique':
@@ -177,7 +177,7 @@ def index28(request):
     })
 
 def index29(request):
-    all_article = article.objects.all()
+    all_article = Article.objects.all()
     article_qs = all_article
     for i in dict(request.GET):
         if i == 'sous_thematique':
@@ -190,7 +190,7 @@ def index29(request):
     })
 
 def index30(request):
-    all_article = article.objects.all()
+    all_article = Article.objects.all()
     article_qs = all_article
     for i in dict(request.GET):
         if i == 'auteur':
@@ -203,7 +203,7 @@ def index30(request):
     })
 
 def index31(request):
-    all_article = article.objects.all()
+    all_article = Article.objects.all()
     article_qs = all_article
     for i in dict(request.GET):
         if i == 'date':
@@ -216,7 +216,7 @@ def index31(request):
     })
 
 def index32(request):
-    all_article = article.objects.all()
+    all_article = Article.objects.all()
     article_qs = all_article
     for i in dict(request.GET):
         if i == 'journal':
@@ -229,7 +229,7 @@ def index32(request):
     })
 
 def index33(request):
-    all_article = article.objects.all()
+    all_article = Article.objects.all()
     article_qs = all_article
     for i in dict(request.GET):
         if i == 'institution':
@@ -242,7 +242,7 @@ def index33(request):
     })
 
 def index34(request):
-    all_article = article.objects.all()
+    all_article = Article.objects.all()
     article_qs = all_article
     for i in dict(request.GET):
         if i == 'laboratoire':
@@ -258,7 +258,7 @@ def index35(request):
     return render(request,'choix_titre_article.html')
 
 def index36(request):
-    all_article = article.objects.all()
+    all_article = Article.objects.all()
     article_qs = all_article
     for i in dict(request.GET):
         if i == 'titre':
@@ -271,7 +271,7 @@ def index36(request):
     })
 
 def index37(request):
-    a = journaux.objects.all()[:25]
+    a = Journaux.objects.all()[:25]
     return render(request,'accueil_journaux.html',{'journaux' : a})
 
 def index38(request):
@@ -281,7 +281,7 @@ def index39(request):
     return render(request,'choix_recherche_journal.html')
 
 def index40(request):
-    all_journaux = journaux.objects.all()
+    all_journaux = Journaux.objects.all()
     journaux_qs = all_journaux
     for i in dict(request.GET):
         if i == 'journal':
@@ -297,7 +297,7 @@ def index41(request):
     return render(request,'choix_histogramme_journal.html')
 
 def index42(request):
-    a = laboratoires.objects.all()[:25]
+    a = Laboratoires.objects.all()[:25]
     return render(request,'accueil_laboratoires.html',{'laboratoires' : a})
 
 def index43(request):
@@ -307,7 +307,7 @@ def index44(request):
     return render(request,'choix_recherche_laboratoire.html')
 
 def index45(request):
-    all_laboratoires = laboratoires.objects.all()
+    all_laboratoires = Laboratoires.objects.all()
     laboratoires_qs = all_laboratoires
     for i in dict(request.GET):
         if i == 'laboratoire':
@@ -333,7 +333,7 @@ def index49(request):
     return render(request,'choix_recherche_institution.html')
 
 def index50(request):
-    all_institutions = institutions.objects.all()
+    all_institutions = Institutions.objects.all()
     institutions_qs = all_institutions
     for i in dict(request.GET):
         if i == 'institution':
@@ -364,7 +364,7 @@ def index56(request):
     return render(request, 'choix_titre_auteur.html')
 
 def index57(request):
-    all_auteur = auteur.objects.all()
+    all_auteur = Auteur.objects.all()
     auteur_qs = all_auteur
     for i in dict(request.GET):
         if i == 'nom':
@@ -377,7 +377,7 @@ def index57(request):
     })
 
 def index58(request):
-    all_auteur = auteur.objects.all()
+    all_auteur = Auteur.objects.all()
     auteur_qs = all_auteur
     for i in dict(request.GET):
         if i == 'prenom':
@@ -390,7 +390,7 @@ def index58(request):
     })
 
 def index59(request):
-    all_auteur = auteur.objects.all()
+    all_auteur = Auteur.objects.all()
     auteur_qs = all_auteur
     for i in dict(request.GET):
         if i == 'titre':
@@ -406,7 +406,7 @@ def index60(request):
     return render(request,'entree_dates_histogramme.html')
 
 def index61(request):
-    all_dates = dates.objects.all()
+    all_dates = Dates.objects.all()
     dates_qs = all_dates
     for i in dict (request.GET):
         if i == 'date_debut':
@@ -469,7 +469,7 @@ def index61(request):
     return HttpResponse(buffer.getvalue(), content_type='image/png')
 
 def index62(request):
-    all_dates = dates.objects.all()
+    all_dates = Dates.objects.all()
     dates_qs = all_dates
     for i in dict (request.GET):
         if i == 'date_debut':
