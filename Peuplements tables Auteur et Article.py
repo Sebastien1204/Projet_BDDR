@@ -407,11 +407,11 @@ for i in range (len(A)):
         if (i < len(A)-1):
             if(A[i][0] == A[i+1][0]):
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id,  Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
+                            (i+1,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -421,11 +421,11 @@ for i in range (len(A)):
                             (compteur_titre,A[i][3]+" "+A[i][1],A[i][0],A[i][7],A[i][8],A[i][9],A[i][10],A[i][11],A[i][5], A[i][6]))
             else :
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id,  Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
+                            (i+1,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -438,11 +438,11 @@ for i in range (len(A)):
         else :
             if (A[i][0] == A[i-1][0]):
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id,  Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
+                            (i+1,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -452,11 +452,11 @@ for i in range (len(A)):
                             (compteur_titre,A[i][3]+" "+A[i][1],A[i][0],A[i][7],A[i][8],A[i][9],A[i][10],A[i][11],A[i][5], A[i][6]))
             else:
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
+                            (i+1,A[i][3],(A[i][1]+" "+A[i][2]).strip(),A[i][4],A[i][5],A[i][6]))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -470,11 +470,11 @@ for i in range (len(A)):
         if (i < len(A)-1):
             if(A[i][0] == A[i+1][0]):
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id,  Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][0],'','','','',''))
+                            (i+1,A[i][0],'','','','',''))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -484,11 +484,11 @@ for i in range (len(A)):
                             (compteur_titre,A[i][3]+" "+A[i][1],A[i][0],A[i][7],A[i][8],A[i][9],A[i][10],A[i][11],A[i][5], A[i][6]))
             else :
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][0],'','','','',''))
+                            (i+1,A[i][0],'','','','',''))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -501,11 +501,11 @@ for i in range (len(A)):
         else :
             if (A[i][0] == A[i-1][0]):
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id,  Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][0],'','','','',''))
+                            (i+1,A[i][0],'','','','',''))
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -515,11 +515,11 @@ for i in range (len(A)):
                             (compteur_titre,A[i][3]+" "+A[i][1],A[i][0],A[i][7],A[i][8],A[i][9],A[i][10],A[i][11],A[i][5], A[i][6]))
             else :
                 cur.execute("""INSERT INTO Auteur2 
-                            (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                            (Auteur_id, Nom, Prenom, Mail, Institution, Laboratoire)
                             VALUES
                             (%s,%s,%s,%s,%s,%s,%s,%s)
                             """,
-                            (i+1,compteur_titre,A[i][0],'','','','','')) 
+                            (i+1,A[i][0],'','','','','')) 
                 
                 cur.execute("""INSERT INTO Article2
                             (Article_id, Auteur, Titre, Date, Journal, Url, Thematique, Sous_thematique, Institution, Laboratoire)
@@ -544,34 +544,34 @@ for i in range(len(df)):
     if (i < len(df)-1):
         if (df['nom'][i]+" "+df['prenom'][i] == df['nom'][i+1]+" "+df['prenom'][i+1]):
             cur.execute("""INSERT INTO Auteur 
-                        (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                        (Auteur_id, Nom, Prenom, Mail, Institution, Laboratoire)
                         VALUES
                         (%s,%s,%s,%s,%s,%s,%s,%s)
                         """,
-                        (compteur_auteur,df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
+                        (compteur_auteur,df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
         else :
             cur.execute("""INSERT INTO Auteur 
-                        (Auteur_id,  Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                        (Auteur_id, Nom, Prenom, Mail, Institution, Laboratoire)
                         VALUES
                         (%s,%s,%s,%s,%s,%s,%s,%s)
                         """,
-                        (compteur_auteur,df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
+                        (compteur_auteur,df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
             compteur_auteur += 1
     else:
         if (df['nom'][i-1]+" "+df['prenom'][i-1] == df['nom'][i]+" "+df['prenom'][i]):
             cur.execute("""INSERT INTO Auteur 
-                        (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                        (Auteur_id, Nom, Prenom, Mail, Institution, Laboratoire)
                         VALUES
                         (%s,%s,%s,%s,%s,%s,%s,%s)
                         """,
-                        (compteur_auteur,df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
+                        (compteur_auteur,df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
         else :
             cur.execute("""INSERT INTO Auteur 
-                        (Auteur_id, Titre, Nom, Prenom, Mail, Institution, Laboratoire)
+                        (Auteur_id,  Nom, Prenom, Mail, Institution, Laboratoire)
                         VALUES
                         (%s,%s,%s,%s,%s,%s,%s,%s)
                         """,
-                        (compteur_auteur,df['titre'][i],df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
+                        (compteur_auteur,df['nom'][i],df['prenom'][i],df['mail'][i],df['institution'][i],df['laboratoire'][i]))
             compteur_auteur += 1
 
 
@@ -588,8 +588,7 @@ cur.execute("DELETE FROM Article WHERE titre='';")
 cur.execute(""" INSERT INTO Transition_auteur_article (Auteur, Article)
             SELECT Auteur.Auteur_id, Article.Article_id
             FROM Auteur2, Article2
-            WHERE Auteur.nom + ' ' + Auteur.prenom == Article.auteur 
-            AND Auteur.article == Article.titre""")
+            WHERE Auteur.nom + ' ' + Auteur.prenom == Article.auteur """)
 
 #Peut-etre qu'il y a des Maj à nom et prenom et ....
 
