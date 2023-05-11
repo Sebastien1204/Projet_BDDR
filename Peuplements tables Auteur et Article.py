@@ -390,13 +390,13 @@ cur.execute("""DROP TABLE IF EXISTS Article2 CASCADE;
 
 #Création de la table de transition Auteur Article
 
-cursor.execute("""DROP TABLE IF EXISTS Lien_auteur_article2 CASCADE;    
-            CREATE TABLE transition_table (
+cursor.execute("""DROP TABLE IF EXISTS Lien_auteur_article CASCADE;    
+            CREATE TABLE Lien_auteur_article (
                 id SERIAL PRIMARY KEY,
                 Auteur INT,
                 Article INT,
-                FOREIGN KEY Article_id REFERENCES Article2(id),
-                FOREIGN KEY Auteur_id REFERENCES Auteur2(id)
+                FOREIGN KEY Article_id REFERENCES Article2,
+                FOREIGN KEY Auteur_id REFERENCES Auteur2;
             )
         """)
 # Peut-etre que le Article2(id) est Article(Article_id) ou Article_id
@@ -585,8 +585,8 @@ cur.execute("DROP TABLE IF EXISTS Article2 CASCADE;")
 cur.execute("DELETE FROM Auteur WHERE titre='';")
 cur.execute("DELETE FROM Article WHERE titre='';")
 
-cur.execute(""" INSERT INTO Transition_auteur_article (Auteur, Article)
-            SELECT Auteur.Auteur_id, Article.Article_id
+cur.execute(""" INSERT INTO Lien_auteur_article (Auteur2, Article2)
+            SELECT Auteur2.Auteur_id, Article2.Article_id
             FROM Auteur2, Article2
             WHERE Auteur.nom + ' ' + Auteur.prenom == Article.auteur """)
 
