@@ -2,8 +2,8 @@
         date_2 = datetime.strptime(date_fin, format1)
     elif(len(date_fin) <= 7 and len(date_fin) > 4):
         date_2 = datetime.strptime(date_fin, format2)
-        date_2.replace(month = date_2.month + 1) - timedelta(1)
+        date_2 = date_2.replace(month = date_2.month + 1) - timedelta(1)
 
     else :
         date_2 = datetime.strptime(date_fin, format3)
-        date_2.replace(year = date_2.year + 1)- timedelta(1)
+        date_ 2 = date_2.replace(year = date_2.year + 1)- timedelta(1)
