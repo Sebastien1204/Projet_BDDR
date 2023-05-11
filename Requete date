@@ -56,7 +56,7 @@
             if jour.day == 1:
                 k+=1
             if(jour in liste_dates_dans_base_de_donnees):
-                liste_quantites_intervalle[k] += dates_qs.get(date=(datetime.strftime(a, format1))).quantite
+                liste_quantites_intervalle[k] += dates_qs.get(date=(datetime.strftime(jour, format1))).quantite
 
 
     else :
@@ -73,7 +73,7 @@
             if jour.day == 1 and jour.month == 1:
                 k+=1
             if(jour in liste_dates_dans_base_de_donnees):
-                liste_quantites_intervalle[k] += dates_qs.get(date=(datetime.strftime(a, format1))).quantite
+                liste_quantites_intervalle[k] += dates_qs.get(date=(datetime.strftime(jour, format1))).quantite
 
     dates_qs = dates_qs.filter(Q(Q(date__in=liste_dates_intervalle)))
 
