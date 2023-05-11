@@ -50,7 +50,7 @@ class Article(models.Model):
         managed = False
         db_table = 'article'
 
-class Lien_auteur_article(models.Model):
+class Lien_article_auteur(models.Model):
     auteur = models.ForeignKey(Auteur, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
 
@@ -83,7 +83,7 @@ class Laboratoires(models.Model):
         db_table = 'laboratoires'
 
 """
-class Lien_laboratoire_article(models.Model):
+class Lien_article_laboratoire(models.Model):
     laboratoire = models.ForeignKey(Laboratoire, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     class Meta :
@@ -92,7 +92,7 @@ class Lien_laboratoire_article(models.Model):
 """
 
 """
-class Lien_laboratoire_auteur(models.Model):
+class Lien_auteur_laboratoire(models.Model):
     laboratoire = models.ForeignKey(Laboratoire, on_delete=models.CASCADE)
     auteur = models.ForeignKey(Auteur, on_delete=models.CASCADE)
     class Meta :
@@ -108,7 +108,7 @@ class Institutions(models.Model):
         db_table = 'institutions'
         
 """
-class Lien_institution_article(models.Model):
+class Lien_article_institution(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     class Meta :
@@ -117,7 +117,7 @@ class Lien_institution_article(models.Model):
 """
 
 """
-class Lien_institution_auteur(models.Model):
+class Lien_auteur_institution(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
     auteur = models.ForeignKey(Auteur, on_delete=models.CASCADE)
     class Meta :
