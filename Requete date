@@ -31,8 +31,8 @@
         for i in range(intervalle_jour):
             jour = date_1 + timedelta(i)
             liste_dates_intervalle.append(datetime.strftime(jour, format1))
-            if(jour in liste_dates_dans_base_de_donnees):
-                liste_quantites_intervalle.append(dates_qs.get(date=jour).quantite)
+            if(datetime.strftime(jour, format1) in liste_dates_dans_base_de_donnees):
+                liste_quantites_intervalle.append(dates_qs.get(date=datetime.strftime(jour, format1)).quantite)
             else:
                 liste_quantites_intervalle.append(0)
 
