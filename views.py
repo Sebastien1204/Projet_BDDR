@@ -519,16 +519,34 @@ def index64(request):
 
 
 def index65(request):
-    transition = Lien_auteur_article.objects.all()
-    context = {
-        'transitions': transitions
-    }
-    return render(request, 'bouton_cliquable.html', context)
+    all_auteur = Auteur.objects.all()
+    
+    for auteur in all_auteur:
+        transition_item = Lien_article_auteur(auteur_id = auteur.auteur_id)  # Adapt this to match the fields in your models
+        transition_item.save()
+
+    all_transition = Lien_article_auteur.objects.all()
+    
+    for transition in all_transition:
+        source_item = Auteur.objects.get(id=transition.auteur_id)
+        article = Article(article_id= source_item.article_id)  
+        article.save()
+        
+    return render(request, 'bouton_cliquable1.html',{'article' : article})
 
 
 def index65(request):
-    transition = Lien_auteur_article.objects.all()
-    context = {
-        'transitions': transitions
-    }
-    return render(request, 'bouton_cliquable1.html', context)
+    all_article = Article.objects.all()
+    
+    for article in all_article:
+        transition_item = Lien_article_auteur(article_id = article.article_id )  # Adapt this to match the fields in your models
+        transition_item.save()
+
+    all_transition = Lien_article_auteur.objects.all()
+    
+    for transition in all_transition:
+        source_item = Article.objects.get(id=transition.article_id)
+        auteur = Auteur(auteur_id= source_item.auteur_id)  
+        auteur.save()
+        
+    return render(request, 'bouton_cliquable1.html',{'auteur' : auteur})
