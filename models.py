@@ -49,8 +49,8 @@ class Article(models.Model):
         db_table = 'article'
 
 class Lien_article_auteur(models.Model):
-    auteur = models.ForeignKey(Auteur, on_delete=models.CASCADE)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    auteur_id = models.ForeignKey(Auteur, on_delete=models.CASCADE)
+    article_id = models.ForeignKey(Article, on_delete=models.CASCADE)
 
     class Meta :
         managed = False
