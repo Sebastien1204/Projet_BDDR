@@ -49,14 +49,14 @@
                 a = date.replace(month=date.month+1)
             liste_dates_intervalle.append(datetime.strftime(a, format2))
             if a in liste_dates_dans_base_de_donnees
-                liste_quantites_intervalle[i] += dates_qs.get(date=(datetime.strftime(a, format2)).quantite
+                liste_quantites_intervalle[i] += dates_qs.get(date=(datetime.strftime(a, format2))).quantite
         k = -1
         for i in range(intervalle_jour):
             jour = date_1 + timedelta(i)
             if jour.day == 1:
                 k+=1
             if(jour in liste_dates_dans_base_de_donnees):
-                liste_quantites_intervalle[k] += dates_qs.get(date=jour).quantite
+                liste_quantites_intervalle[k] += dates_qs.get(date=(datetime.strftime(a, format1))).quantite
 
 
     else :
@@ -73,7 +73,7 @@
             if jour.day == 1 and jour.month == 1:
                 k+=1
             if(jour in liste_dates_dans_base_de_donnees):
-                liste_quantites_intervalle[k] += dates_qs.get(date=jour).quantite
+                liste_quantites_intervalle[k] += dates_qs.get(date=(datetime.strftime(a, format2))).quantite
 
     dates_qs = dates_qs.filter(Q(Q(date__in=liste_dates_intervalle)))
 
