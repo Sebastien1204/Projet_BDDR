@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import Q, When
-from miniprojet.models import Thematique, Sous_thematique, Auteur, Article, Journaux, Dates, Laboratoires, Institutions, Lien_auteur_article
+from miniprojet.models import Thematique, Sous_thematique, Auteur, Article, Journaux, Dates, Laboratoires, Institutions, Lien_article_auteur
 from datetime import datetime, timedelta
 from io import BytesIO
 import matplotlib.pyplot as plt
