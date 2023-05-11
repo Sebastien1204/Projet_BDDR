@@ -1,9 +1,9 @@
      if (len(date_debut) > 7):
         date_1 = datetime.strptime(date_debut, format1)
     elif(len(date_debut) <= 7 and len(date_debut) > 4):
-        date_1 = datetime.strptime(date_debut, format1)
+        date_1 = datetime.strptime(date_debut, format2)
     else :
-        date_1 = datetime.strptime(date_debut, format1)
+        date_1 = datetime.strptime(date_debut, format3)
 
     if (len(date_fin) > 7):
         date_2 = datetime.strptime(date_fin, format1)
@@ -55,7 +55,7 @@
             jour = date_1 + timedelta(i)
             if jour.day == 1:
                 k+=1
-            if(jour in liste_dates_dans_base_de_donnees):
+            if(datetime.strftime(jour, format1) in liste_dates_dans_base_de_donnees):
                 liste_quantites_intervalle[k] += dates_qs.get(date=(datetime.strftime(jour, format1))).quantite
 
 
@@ -72,7 +72,7 @@
             jour = date_1 + timedelta(i)
             if jour.day == 1 and jour.month == 1:
                 k+=1
-            if(jour in liste_dates_dans_base_de_donnees):
+            if(datetime.strftime(jour, format1) in liste_dates_dans_base_de_donnees):
                 liste_quantites_intervalle[k] += dates_qs.get(date=(datetime.strftime(jour, format1))).quantite
 
     dates_qs = dates_qs.filter(Q(Q(date__in=liste_dates_intervalle)))
