@@ -40,6 +40,7 @@
         intervalle = date_2.month - date_1.month + 1
         liste_dates_intervalle = []
         liste_dates_intervalle.append(date_debut)
+        liste_quantites_intervalle = [0] * intervalle
         for i in range(1,intervalle):
             date = datetime.strptime(liste_dates_intervalle[i-1], format2)
             if(date.month >= 12):
@@ -47,11 +48,12 @@
             else :
                 a = date.replace(month=date.month+1)
             liste_dates_intervalle.append(datetime.strftime(a, format2))
-        liste_quantites_intervalle = [0] * intervalle
+            if a in liste_dates_dans_base_de_donnees
+                liste_quantites_intervalle[i] += dates_qs.get(date=(datetime.strftime(a, format2)).quantite
         k = -1
         for i in range(intervalle_jour):
             jour = date_1 + timedelta(i)
-            if jour.days == 1:
+            if jour.day == 1:
                 k+=1
             if(jour in liste_dates_dans_base_de_donnees):
                 liste_quantites_intervalle[k] += dates_qs.get(date=jour).quantite
@@ -60,13 +62,15 @@
     else :
         intervalle = date_2.year - date_1.year + 1
         liste_dates_intervalle = []
+        liste_quantites_intervalle = [0] * intervalle
         for i in range(intervalle):
             liste_dates_intervalle.append(datetime.strftime(date_1 + timedelta(366*i), format3))
-        liste_quantites_intervalle = [0] * intervalle
+            if datetime.strftime(date_1 + timedelta(366*i), format3) in liste_dates_dans_base_de_donnees:
+                liste_quantites_intervalle[i] += dates_qs.get(date=datetime.strftime(date_1 + timedelta(366*i), format3)).quantite
         k=-1
         for i in range(intervalle_jour):
             jour = date_1 + timedelta(i)
-            if jour.days == 1:
+            if jour.day == 1:
                 k+=1
             if(jour in liste_dates_dans_base_de_donnees):
                 liste_quantites_intervalle[k] += dates_qs.get(date=jour).quantite
